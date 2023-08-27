@@ -1,0 +1,22 @@
+def test_loop(model: torch.nn.Module,
+               dataloader: torch.utils.data.DataLoader,
+               loss_fn: torch.nn.Module,
+               device: torch.device = device):
+  """Performs a testing loop step on model going over the data loader."""
+  test_loss, test_acc = 0, 0
+
+  model.eval()
+  with torch.inference_mode():
+    for X, y in (dataloader):
+      X, y = X.to(device), y.to(device)
+
+      test_pred = model(X)
+
+      test_loss += loss_fn(test_pred, y).item()
+
+      y_pred_labels = torch.argmax(torch.softmax(test_pred, dim=1), dim=1)
+      test_acc += (y_pred_labels==y).sum().item()/len(test_pred)
+
+    test_loss /= len(dataloader)
+    test_acc /= len(dataloader)
+    return test_loss, test_acc

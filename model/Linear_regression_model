@@ -1,0 +1,16 @@
+# Create a linear model by subclassing nn.Module
+
+class LinearRegressionModelv2(nn.Module):
+  def __init__(self):
+    super().__init__()
+    # Use nn.Linear() for creating the model parameters / also called: linear transform, probing layer, fully connected layer, dense layer
+    self.linear_layer = nn.Linear(in_features=1,
+                                  out_features=1)
+
+  def forward(self, x: torch.Tensor) -> torch.Tensor: # : tells you x should be torch tensor and -> tells you it shoud return torch tensor
+    return self.linear_layer(x)
+
+# Set the manual seed
+torch.manual_seed(42)
+model_1 = LinearRegressionModelv2()
+model_1, model_1.state_dict()
